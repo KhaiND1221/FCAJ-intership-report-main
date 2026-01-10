@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import {
     ChevronDown,
     ChevronRight,
@@ -16,6 +16,7 @@ import {
     CheckCircle,
     MessageSquare,
     Check,
+    RotateCcw,
     LucideIcon
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -269,7 +270,9 @@ export function Sidebar() {
 
                 {/* Logo Area - Minimalist */}
                 <div className="h-20 flex items-center justify-center border-b border-gray-800 bg-[#0f1b2d]">
-                    <img src={`${import.meta.env.BASE_URL}FCJ-logo.png`} alt="FCJ" className="h-10 opacity-90 hover:opacity-100 transition-opacity" />
+                    <Link to="/" onClick={() => setIsOpen(false)} className="cursor-pointer">
+                        <img src={`${import.meta.env.BASE_URL}FCJ-logo.png`} alt="FCJ" className="h-10 opacity-90 hover:opacity-100 transition-opacity" />
+                    </Link>
                 </div>
 
                 {/* Search - Modern Pill/Floating feel */}
@@ -344,6 +347,25 @@ export function Sidebar() {
                                 {language === 'en' ? 'EN' : 'VI'}
                             </span>
                         </button>
+
+                        {/* Reset Progress Button */}
+                        {visitedPages.length > 0 && (
+                            <button
+                                onClick={() => {
+                                    setVisitedPages([]);
+                                    sessionStorage.removeItem(VISITED_PAGES_KEY);
+                                }}
+                                className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/5 transition-all group"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <RotateCcw size={18} className="text-gray-500 group-hover:text-accent-orange transition-colors" />
+                                    <span>{language === 'en' ? 'Reset Progress' : 'Đặt Lại Tiến Trình'}</span>
+                                </div>
+                                <span className="text-[10px] font-medium text-gray-600 bg-gray-800/50 px-1.5 py-px rounded">
+                                    {visitedPages.length}
+                                </span>
+                            </button>
+                        )}
                     </div>
 
                     {/* Meta Info */}
